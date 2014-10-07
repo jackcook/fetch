@@ -13,12 +13,40 @@ from pygithub3 import Github
 from twilio.rest import TwilioRestClient
 import twitter
 
+def retrieveFromOptions(key):
+	with open('data.txt', 'r+') as f:
+		for line in f.readlines():
+			lineKey = line.split('=')[0]
+			lineValue = line.split('=')[1]
+			if lineKey == key:
+				if lineValue != "XXXXXXXXXX":
+					return lineValue
+	return None
+
+def setOption(key, value):
+	data = None
+	lineNumber = 0
+	with open('data.txt', 'r') as f:
+		data = f.readlines()
+		i = 0
+		for line in data:
+			if line.startswith('#') == False:
+				lineKey = line.split('=')[0]
+				lineValue = line.split('=')[1]
+				if lineKey == key:
+					lineNumber = i
+					break
+				i += 1
+			
+	with open('data.txt', 'w') as f:
+		data[lineNumber] = "%s=%s" % (key, value)
+		f.writelines(data)
 
 ### PREPARE EVERNOTE ###
 
-dev_token = "INSERT_EVERNOTE_DEV_TOKEN_HERE"
-notebookguid = ""
-noteguid = ""
+dev_token = retrieveFromOptions('evernote_dev_token')
+notebookguid = retrieveFromOptions('notebookguid')
+noteguid = retrieveFromOptions('noteguid')
 
 client = EvernoteClient(token=dev_token)
 user_store = client.get_user_store()
@@ -26,34 +54,24 @@ note_store = client.get_note_store()
 notebooks = note_store.listNotebooks()
 notebook_exists = False
 
-with open('data.txt', 'r+') as f:
-	for line in f.readlines():
-		key = line.split('=')[0]
-		value = line.split('=')[1].replace('\n', '')
-		if key == 'notebookguid':
-			notebookguid = value
-			notebook_exists = True
-		elif key == 'noteguid':
-			noteguid = value
-
-	if notebook_exists == False:
-		notebook = Types.Notebook()
-		notebook.name = "Errors"
-		new_notebook = note_store.createNotebook(dev_token, notebook)
-		notebookguid = new_notebook.guid
-		f.write('notebookguid=%s\n' % notebookguid)
-
-		note_body = """<?xml version="1.0" encoding="UTF-8"?>
+if notebookguid == None:
+	notebook = Types.Notebook()
+	notebook.name = 'Errors'
+	new_notebook = note_store.createNotebook(dev_token, notebook)
+	notebookguid = new_notebook.guid
+	setOption('notebookguid', notebookguid)
+	
+	note_body = """<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE en-note SYSTEM "http://xml.evernote.com/pub/enml2.dtd">
 <en-note></en-note>"""
 	
-		note = Types.Note()
-		note.title = '%s Errors' % socket.gethostname()
-		note.notebookGuid = notebookguid
-		note.content = note_body
-		new_note = note_store.createNote(dev_token, note)
-		noteguid = new_note.guid
-		f.write('noteguid=%s\n' % noteguid)
+	note = Types.Note()
+	note.title = '%s Errors' % socket.gethostname()
+	note.notebookGuid = notebookguid
+	note.content = note_body
+	new_note = note_store.createNote(dev_token, note)
+	noteguid = new_note.guid
+	setOption('noteguid', noteguid)
 
 ### PREPARE TWILIO ###
 
