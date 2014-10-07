@@ -75,17 +75,21 @@ if notebookguid == None:
 
 ### PREPARE TWILIO ###
 
-account_sid = "INSERT_TWILIO_ACCOUNT_SID_HERE"
-auth_token = "INSERT_TWILIO_AUTH_TOKEN_HERE"
+account_sid = retrieveFromOptions('twilio_account_sid')
+auth_token = retrieveFromOptions('twilio_auth_token')
 client = TwilioRestClient(account_sid, auth_token)
 
 ### PREPARE TWITTER ###
 
-api = twitter.Api(consumer_key='INSERT_TWITTER_CONSUMER_KEY_HERE', consumer_secret='INSERT_CONSUMER_SECRET_HERE', access_token_key='INSERT_ACCESS_TOKEN_KEY_HERE', access_token_secret='INSERT_ACCESS_TOKEN_SECRET_HERE')
+api = twitter.Api(
+	consumer_key=retrieveFromOptions('twitter_consumer_key'),
+	consumer_secret=retrieveFromOptions('twitter_consumer_secret'),
+	access_token_key=retrieveFromOptions('twitter_access_token_key'),
+	access_token_secret=retrieveFromOptions('twitter_access_token_secret'))
 
 def createGithubIssue(error):
 	connection = httplib.HTTPSConnection('api.github.com', 443, timeout = 30)
-	headers = {"Authorization":"token INSERT_GITHUB_AUTH_TOKEN_HERE", "user-agent":"python"}
+	headers = {"Authorization":"token %s" % retrieveFromOptions('github_auth_token'), "user-agent":"python"}
 	body = "{\n  \"title\": \"%s\"\n}" % error
 	connection.request('POST', '/repos/Fetch-Errors/site/issues', body, headers)
 	print "GitHub issue has been created"
@@ -99,7 +103,7 @@ def makePhoneCall(error, phonenumber):
 
 def sendSlackMessage(error):
 	connection = httplib.HTTPSConnection('slack.com', 443, timeout = 30)
-	connection.request('GET', '/api/chat.postMessage?token=INSERT_SLACK_TOKEN_HERE&channel=INSERT_CHANNEL_ID_HERE&text=%s&pretty=1&username=Fetch&icon_url=http://104.131.74.5/logo/48.png' % error.replace(' ', '+'), None, {})
+	connection.request('GET', '/api/chat.postMessage?token=%s&channel=%s&text=%s&pretty=1&username=Fetch&icon_url=http://104.131.74.5/logo/48.png' % (retrieveFromOptions('slack_auth_token'), retrieveFromOptions('slack_channel_id'), error.replace(' ', '+')), None, {})
 	print "Slack message has been sent"
 
 def sendTextMessage(error, phonenumber):
@@ -138,7 +142,7 @@ def sendTweet(error):
 	print "Tweet has been tweeted"
 
 def sendYo(username):
-	requests.post('http://api.justyo.co/yo/', data={'api_token': 'INSERT_YO_API_TOKEN_HERE', 'username': username})
+	requests.post('http://api.justyo.co/yo/', data={'api_token': retrieveFromOptions('yo_api_token'), 'username': username})
 	print "%s has just been yo'd" % username
 
 def check():
@@ -168,25 +172,25 @@ def check():
 				if 'g' in apis:
 					createGithubIssue(error)
 				if 'p' in apis:
-					Timer(2, makePhoneCall, [error, 'INSERT_PHONE_NUMBER_HERE']).start()
+					Timer(2, makePhoneCall, [error, retrieveFromOptions('phone_number')]).start()
 				if 's' in apis:
 					sendSlackMessage(error)
 				if 't' in apis:
-					sendTextMessage(error, 'INSERT_PHONE_NUMBER_HERE')
+					sendTextMessage(error, retrieveFromOptions('phone_number'))
 				if 'e' in apis:
 					sendToEvernote(error)
 				if 'T' in apis:
 					sendTweet(error)
 				if 'y' in apis:
-					sendYo('INSERT_YO_USERNAME_HERE')
+					sendYo(retrieveFromOptions('yo_username'))
 			else:
 				createGithubIssue(error)
-				Timer(2, makePhoneCall, [error, 'INSERT_PHONE_NUMBER_HERE']).start()
+				Timer(2, makePhoneCall, [error, retrieveFromOptions('phone_number')]).start()
 				sendSlackMessage(error)
-				sendTextMessage(error, 'INSERT_PHONE_NUMBER_HERE')
+				sendTextMessage(error, retrieveFromOptions('phone_number'))
 				sendToEvernote(error)
 				sendTweet(error)
-				sendYo('INSERT_YO_USERNAME_HERE')
+				sendYo(retrieveFromOptions('yo_username'))
 			f.write(error + '\n')
 
 check()
