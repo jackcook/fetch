@@ -1,7 +1,8 @@
 #!/usr/bin/env python
 import os
 import sys
-pwd = os.path.dirname(os.path.abspath(__file__))
+
+pwd = os.path.dirname(os.path.realpath(__file__))
 
 if (len(sys.argv) == 1) or (sys.argv[1] == 'help'):
     print """Fetch CLI:
@@ -19,12 +20,12 @@ elif sys.argv[1] == 'send':
     if len(sys.argv) <= 2:
         print "Incorrect usage! Type 'fetch send [recipient]' to send a log file."
     else:
-        os.system('python ' + os.path.join(pwd, 'send.py') + ' %s' % sys.argv[2])
+        os.system('python %s %s' % (sys.argv[2], os.path.join(pwd, 'send.py')))
 elif sys.argv[1] == 'start':
     if len(sys.argv) >= 2:
         if sys.argv[2] == 'all':
-            os.system('python ' + os.path.join(pwd, 'error.py'))
+            os.system('python %s' % os.path.join(pwd, 'send.py'))
         else:
-            os.system('python ' + os.path.join(pwd, 'error.py') + ' %s' % sys.argv[2])
+            os.system('python %s %s' % (sys.argv[2], os.path.join(pwd, 'send.py')))
     else:
-        os.system('python ' + os.path.join(pwd, 'error.py'))
+        os.system('python %s' % os.path.join(pwd, 'send.py'))
