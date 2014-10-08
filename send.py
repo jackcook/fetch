@@ -15,11 +15,11 @@ client = EvernoteClient(token=dev_token)
 note_store = client.get_note_store()
 
 with open('data.txt', 'r+') as f:
-	for line in f.readlines():
-		key = line.split('=')[0]
-		value = line.split('=')[1].replace('\n', '')
-		if key == 'noteguid':
-			noteguid = value
+    for line in f.readlines():
+        key = line.split('=')[0]
+        value = line.split('=')[1].replace('\n', '')
+        if key == 'noteguid':
+            noteguid = value
 
 text = note_store.getNoteContent(dev_token, noteguid).replace('<br clear="none"/>', '\n')
 text = re.sub('<[^>]+>', '', text)
@@ -28,7 +28,7 @@ list = text.split('\n')
 
 text = ''
 for s in reversed(list):
-	text += s + '\n'
+    text += s + '\n'
 text = text.replace('\n', '', 1)
 
 message = """\

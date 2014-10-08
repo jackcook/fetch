@@ -15,15 +15,15 @@ if (len(sys.argv) == 1) or (sys.argv[1] == 'help'):
     - y: yo 
 - fetch <send> <recipient>: emails the recipient a complete log file"""
 elif sys.argv[1] == 'send':
-	if len(sys.argv) <= 2:
-		print "Incorrect usage! Type 'fetch send [recipient]' to send a log file."
-	else:
-		os.system('python /home/send.py %s' % sys.argv[2])
+    if len(sys.argv) <= 2:
+        print "Incorrect usage! Type 'fetch send [recipient]' to send a log file."
+    else:
+        os.system('python /home/send.py %s' % sys.argv[2])
 elif sys.argv[1] == 'start':
     if len(sys.argv) >= 2:
         if sys.argv[2] == 'all':
             os.system('python /home/error.py')
         else:
-    	    os.system('python /home/error.py %s' % sys.argv[2])
+            os.system('python /home/error.py %s' % sys.argv[2])
     else:
-    	os.system('python /home/error.py')
+        os.system('python /home/error.py')
