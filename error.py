@@ -16,7 +16,7 @@ from twilio.rest import TwilioRestClient
 import twitter
 
 def retrieveFromOptions(key):
-	with open('data.txt', 'r+') as f:
+	with open('options.txt', 'r+') as f:
 		for line in f.readlines():
 			lineKey = line.split('=')[0]
 			lineValue = line.split('=')[1]
@@ -28,7 +28,7 @@ def retrieveFromOptions(key):
 def setOption(key, value):
 	data = None
 	lineNumber = 0
-	with open('data.txt', 'r') as f:
+	with open('options.txt', 'r') as f:
 		data = f.readlines()
 		i = 0
 		for line in data:
@@ -40,7 +40,7 @@ def setOption(key, value):
 					break
 				i += 1
 			
-	with open('data.txt', 'w') as f:
+	with open('options.txt', 'w') as f:
 		data[lineNumber] = "%s=%s" % (key, value)
 		f.writelines(data)
 
