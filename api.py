@@ -7,6 +7,37 @@ from pygithub3 import Github
 from twilio.rest import TwilioRestClient
 import twitter
 
+### PREPARE EVERNOTE ###
+
+dev_token = retrieveFromOptions('evernote_dev_token')
+notebookguid = retrieveFromOptions('notebookguid')
+noteguid = retrieveFromOptions('noteguid')
+
+client = EvernoteClient(token=dev_token)
+user_store = client.get_user_store()
+note_store = client.get_note_store()
+notebooks = note_store.listNotebooks()
+notebook_exists = False
+
+if notebookguid == None:
+    notebook = Types.Notebook()
+    notebook.name = 'Errors'
+    new_notebook = note_store.createNotebook(dev_token, notebook)
+    notebookguid = new_notebook.guid
+    setOption('notebookguid', notebookguid)
+    
+    note_body = """<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE en-note SYSTEM "http://xml.evernote.com/pub/enml2.dtd">
+<en-note></en-note>"""
+    
+    note = Types.Note()
+    note.title = '%s Errors' % socket.gethostname()
+    note.notebookGuid = notebookguid
+    note.content = note_body
+    new_note = note_store.createNote(dev_token, note)
+    noteguid = new_note.guid
+    setOption('noteguid', noteguid)
+
 ### PREPARE TWILIO ###
 
 account_sid = retrieveFromOptions('twilio_account_sid')
