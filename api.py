@@ -1,5 +1,10 @@
 #!/usr/bin/env python
-from error import *
+from aplo import *
+
+from datetime import datetime
+import httplib
+import requests
+import socket
 
 from evernote.api.client import EvernoteClient
 import evernote.edam.type.ttypes as Types
@@ -31,12 +36,14 @@ if notebookguid == None:
 <en-note></en-note>"""
     
     note = Types.Note()
-    note.title = '%s Errors' % socket.gethostname()
+    note.title = '%s Errors' % "Test"#socket.gethostname()
     note.notebookGuid = notebookguid
     note.content = note_body
     new_note = note_store.createNote(dev_token, note)
     noteguid = new_note.guid
     setOption('noteguid', noteguid)
+
+print "test"
 
 ### PREPARE TWILIO ###
 
