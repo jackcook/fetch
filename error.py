@@ -18,8 +18,8 @@ import twitter
 def retrieveFromOptions(key):
     with open('options.txt', 'r+') as f:
         for line in f.readlines():
-            lineKey = line.split('=')[0]
-            lineValue = line.split('=')[1]
+            lineKey = line.split(' = ')[0]
+            lineValue = line.split(' = ')[1]
             if lineKey == key:
                 if lineValue != "XXXXXXXXXX":
                     return lineValue
@@ -33,8 +33,8 @@ def setOption(key, value):
         i = 0
         for line in data:
             if line.startswith('#') == False:
-                lineKey = line.split('=')[0]
-                lineValue = line.split('=')[1]
+                lineKey = line.split(' = ')[0]
+                lineValue = line.split(' = ')[1]
                 if lineKey == key:
                     lineNumber = i
                     break
