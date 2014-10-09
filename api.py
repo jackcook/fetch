@@ -1,5 +1,10 @@
 #!/usr/bin/env python
-from error import *
+from aplo import *
+
+from datetime import datetime
+import httplib
+import requests
+import socket
 
 from evernote.api.client import EvernoteClient
 import evernote.edam.type.ttypes as Types
@@ -25,13 +30,13 @@ if notebookguid == None:
     new_notebook = note_store.createNotebook(dev_token, notebook)
     notebookguid = new_notebook.guid
     setOption('notebookguid', notebookguid)
-    
+
     note_body = """<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE en-note SYSTEM "http://xml.evernote.com/pub/enml2.dtd">
 <en-note></en-note>"""
-    
+
     note = Types.Note()
-    note.title = '%s Errors' % socket.gethostname()
+    note.title = '%s Errors' % "Test"#socket.gethostname()
     note.notebookGuid = notebookguid
     note.content = note_body
     new_note = note_store.createNote(dev_token, note)
@@ -46,7 +51,7 @@ client = TwilioRestClient(account_sid, auth_token)
 
 ### PREPARE TWITTER ###
 
-api = twitter.Api(
+twitter_api = twitter.Api(
     consumer_key=retrieveFromOptions('twitter_consumer_key'),
     consumer_secret=retrieveFromOptions('twitter_consumer_secret'),
     access_token_key=retrieveFromOptions('twitter_access_token_key'),
@@ -103,7 +108,7 @@ def sendToEvernote(error):
 def sendTweet(error):
     try:
         tweet = (error[:137] + '...') if len(error) > 137 else error
-        status = api.PostUpdate(tweet)
+        status = twitter_api.PostUpdate(tweet)
     except:
         pass
     print "Tweet has been tweeted"
