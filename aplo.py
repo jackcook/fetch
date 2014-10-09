@@ -26,7 +26,7 @@ def setOption(key, value):
                     lineNumber = i
                     break
                 i += 1
-    
+
     with open('options.txt', 'w') as f:
         data[lineNumber] = "%s = %s\n" % (key, value)
         f.writelines(data)
