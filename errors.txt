@@ -1,0 +1,1 @@
+PHP Fatal error:  Call to undefined function error() in /var/www/html/index.php on line 1
