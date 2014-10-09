@@ -5,20 +5,20 @@ import sys
 pwd = os.path.dirname(os.path.realpath(__file__))
 
 if (len(sys.argv) == 1) or (sys.argv[1] == 'help'):
-    print """Fetch CLI:
-- fetch <help>: displays this help screen
-- fetch <start> [apis]: starts fetch using the specified APIs
+    print """Aplo CLI:
+- aplo <help>: displays this help screen
+- aplo <start> [apis]: starts fetch using the specified APIs
     - e: evernote
     - g: github
     - p: phone call
     - s: slack
     - t: text message
     - T: twitter
-    - y: yo 
-- fetch <send> <recipient>: emails the recipient a complete log file"""
+    - y: yo
+- aplo <send> <recipient>: emails the recipient a complete log file"""
 elif sys.argv[1] == 'send':
     if len(sys.argv) <= 2:
-        print "Incorrect usage! Type 'fetch send [recipient]' to send a log file."
+        print "Incorrect usage! Type 'aplo send [recipient]' to send a log file."
     else:
         os.system('python %s %s' % (sys.argv[2], os.path.join(pwd, 'send.py')))
 elif sys.argv[1] == 'start':
