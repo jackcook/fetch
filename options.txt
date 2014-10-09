@@ -1,3 +1,6 @@
+email_address = XXXXXXXXXX
+email_password = XXXXXXXXXX
+email_smtp_server = XXXXXXXXXX
 evernote_dev_token = XXXXXXXXXX
 notebookguid = XXXXXXXXXX
 noteguid = XXXXXXXXXX
