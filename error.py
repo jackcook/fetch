@@ -1,5 +1,4 @@
-#!/usr/bin/env python
-import api
+from api import *
 from aplo import *
 
 import sys
@@ -35,28 +34,27 @@ def check():
 
             if 'all' not in apis:
                 if 'g' in apis:
-                    api.createGithubIssue(error)
+                    createGithubIssue(error)
                 if 'p' in apis:
-                    pass
-                    Timer(1, api.makePhoneCall, [error, retrieveFromOptions('phone_number')]).start()
+                    Timer(1, makePhoneCall, [error, retrieveFromOptions('phone_number')]).start()
                 if 's' in apis:
-                    api.sendSlackMessage(error)
+                    sendSlackMessage(error)
                 if 't' in apis:
-                    api.sendTextMessage(error, retrieveFromOptions('phone_number'))
+                    sendTextMessage(error, retrieveFromOptions('phone_number'))
                 if 'e' in apis:
-                    api.sendToEvernote(error)
+                    sendToEvernote(error)
                 if 'T' in apis:
-                    api.sendTweet(error)
+                    sendTweet(error)
                 if 'y' in apis:
-                    api.sendYo(retrieveFromOptions('yo_username'))
+                    sendYo(retrieveFromOptions('yo_username'))
             else:
-                api.createGithubIssue(error)
-                Timer(1, api.makePhoneCall, [error, retrieveFromOptions('phone_number')]).start()
-                api.sendSlackMessage(error)
-                api.sendTextMessage(error, retrieveFromOptions('phone_number'))
-                api.sendToEvernote(error)
-                api.sendTweet(error)
-                api.sendYo(retrieveFromOptions('yo_username'))
+                createGithubIssue(error)
+                Timer(1, makePhoneCall, [error, retrieveFromOptions('phone_number')]).start()
+                sendSlackMessage(error)
+                sendTextMessage(error, retrieveFromOptions('phone_number'))
+                sendToEvernote(error)
+                sendTweet(error)
+                sendYo(retrieveFromOptions('yo_username'))
 
             check_done = True
             print "Error distributed"

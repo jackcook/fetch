@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 from aplo import *
 
 from datetime import datetime
@@ -36,7 +35,7 @@ if notebookguid == None:
 <en-note></en-note>"""
 
     note = Types.Note()
-    note.title = '%s Errors' % "Test"#socket.gethostname()
+    note.title = '%s Errors' % socket.gethostname()
     note.notebookGuid = notebookguid
     note.content = note_body
     new_note = note_store.createNote(dev_token, note)
@@ -57,7 +56,7 @@ twitter_api = twitter.Api(
     access_token_key=retrieveFromOptions('twitter_access_token_key'),
     access_token_secret=retrieveFromOptions('twitter_access_token_secret'))
 
-### CALLS TO APIS ###
+### API METHODS ###
 
 def createGithubIssue(error):
     connection = httplib.HTTPSConnection('api.github.com', 443, timeout = 30)
@@ -115,4 +114,4 @@ def sendTweet(error):
 
 def sendYo(username):
     requests.post('http://api.justyo.co/yo/', data={'api_token': retrieveFromOptions('yo_api_token'), 'username': username})
-    print "%s has just been yo'd" % username
+    print "%s has been yo'd" % username

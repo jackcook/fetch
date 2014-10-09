@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 import os
 import sys
 
@@ -10,7 +9,7 @@ def retrieveFromOptions(key):
             lineKey = line.split(' = ')[0]
             lineValue = line.split(' = ')[1].replace('\n', '')
             if lineKey == key:
-                if lineValue != "XXXXXXXXXX":
+                if lineValue != 'XXXXXXXXXX':
                     return lineValue
     return None
 
