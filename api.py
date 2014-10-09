@@ -43,6 +43,8 @@ if notebookguid == None:
     noteguid = new_note.guid
     setOption('noteguid', noteguid)
 
+print "test"
+
 ### PREPARE TWILIO ###
 
 account_sid = retrieveFromOptions('twilio_account_sid')
