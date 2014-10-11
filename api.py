@@ -1,4 +1,4 @@
-from aplo import *
+from fetch import *
 
 from datetime import datetime
 import httplib

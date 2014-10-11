@@ -1,5 +1,5 @@
 from api import *
-from aplo import *
+from fetch import *
 
 import sys
 from threading import Timer
